@@ -1,0 +1,47 @@
+html, body{
+	font-family: 'Nunito Sans', sans-serif;
+}
+*,*:focus,*:hover{
+    outline:none;
+}
+.er{
+	color: red;
+}
+.sg{
+    color: green;
+}
+.c-basic, .top-bar, .top-bar ul{
+	background-color: #44318D;
+	color: #fff;
+}
+.top-bar a{
+	color: #fff;
+}
+.c-links{
+	background-color: #D83F87;
+}
+.logo{
+    color: #fff;
+    font-weight: 300;
+    font-size: 28px;
+    font-family: system-ui;
+    letter-spacing: 4px;
+}
+.logo:hover{
+	color: #fff;
+}
+.search{
+
+    margin: 4px !important;
+    background-color: white;
+    font-family: system-ui;
+    color: #44318d;
+}
+
+.m-lg a{
+    color: #e6e6e6;
+    padding: 14px;
+}
+.m-lg a:hover{
+    color: #fff;
+}
