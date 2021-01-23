@@ -19,3 +19,5 @@ Route::view('/create', 'create');
 Route::post('/create', 'App\Http\Controllers\AccountController@userCreate');
 Route::post('/login', 'App\Http\Controllers\AccountController@userLogin');
 Route::get('/logout', 'App\Http\Controllers\AccountController@userLogout');
+
+Route::get('/product/{id}', 'App\Http\Controllers\ProductController@viewProduct');

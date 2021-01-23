@@ -4,6 +4,7 @@
     <title>{{ $page_title }}</title>
     <meta name="google-site-verification" content="">
     <meta name="msvalidate.01" content="">
+    <meta name="csrf" content="{{ csrf_token() }}">
     <!-- basic meta tags - social media meta tags - Facebook Open Graph - Twitter Cards -->
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, minimal-ui, user-scalable=no">
@@ -38,7 +39,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.6.3/js/foundation.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.3/motion-ui.min.js"></script>
+<script src="{{ URL::asset('assets/js/master.js') }}"></script>
 <script>$(document).foundation();</script>
-@yield('extra')
 </body>
 </html>
