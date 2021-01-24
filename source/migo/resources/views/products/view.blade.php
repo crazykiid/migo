@@ -26,20 +26,19 @@
 
         <div class="medium-6 large-5 cell large-offset-1">
             <h3>{{ $data['name'] }}</h3>
+            <span class="pid" style="display:none">{{ $data['id'] }}</span>
             <p>₹ {{ $data['price'] }}</p>
             <p>{{ $data['description'] }}</p>   
             <label>Quantity
-            <select>
+            <select name="quantity">
                 @for($x = 1;$x <= $data['max'];$x++)
                 <option value="{{$x}}">{{$x}}</option>
                 @endfor
             </select>
             </label>
-            <button class="hollow button expanded">Add to Cart</button>
+            <button class="hollow button expanded pick">Add to Cart</button>
             <a href="#" class="button large expanded">Buy Now</a>
         </div>
     </div>
 </div>
-
-
 @stop

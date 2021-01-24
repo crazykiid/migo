@@ -13,24 +13,39 @@ class ProductController extends Controller
 
 		if(strlen($id) > 0)
 		{
-			$result = DB::table('products')->where('_id', $id)->first();
-
-			$data['id'] = $result->_id;
-			$data['name'] = $result->_name;
-			$data['description'] = $result->_description;
-			$data['price'] = $result->_price;
-			$data['images'] = [];
-			$images = json_decode($result->_images, true);
-			if($images && count($images) > 0){
-				foreach ($images as $img) {
-					$data['images'][] = 'http://localhost:8000/assets/img/product/'.$img;
+			try
+			{
+				$result = DB::table('products')->where('_id', $id)->first();
+				if($result)
+				{
+					//$data['cart'] = CartController::getCartCount();
+					$data['id'] = $result->_id;
+					$data['name'] = $result->_name;
+					$data['description'] = $result->_description;
+					$data['price'] = $result->_price;
+					$data['images'] = [];
+					$images = json_decode($result->_images, true);
+					if($images && count($images) > 0){
+						foreach ($images as $img) {
+							$data['images'][] = 'http://localhost:8000/assets/img/product/'.$img;
+						}
+					}
+					$data['max'] = 4;
+					return view('products.view', ['data' => $data]);
+				}
+				else
+				{
+					return "Product Doesn't Exist.";
 				}
 			}
-			$data['max'] = 4;
-			return view('products.view', ['data' => $data]);
+			catch(\Exception $e)
+			{
+				return "Error Occurred.";
+			}
 		}
-        else{
-        	return "invalid product";
+        else
+        {
+        	return "Invalid Product.";
         }
     }
     public function pickProduct(Request $req){

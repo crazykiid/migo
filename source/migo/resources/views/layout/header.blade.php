@@ -24,7 +24,7 @@
                 <a href="https://github.com/crazykiid/migo" target="_blank" style="color:#fff;padding: 14px;"><i class="fi-social-github large"></i> Source</a>
             </li>
             <li>
-                <a href="/cart"><i class="fi-shopping-cart large"></i> Cart (0)</a>
+                <a href="/cart"><i class="fi-shopping-cart large"></i> Cart (<span class="cart">0</span>)</a>
             </li>
             <li>
                 @if(Session::has('user'))

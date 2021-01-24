@@ -22,6 +22,26 @@ function login(u,p){
 		}
 	});
 }
+function add(pid,q){
+	var payload = {'_pid':pid, '_q':q};
+	var headers = {'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content')};
+	//$('.res').empty().removeClass('callout alert success');
+	$.ajax({
+		headers: headers,
+        type: 'POST',
+        url: '/cart/pick',
+		dataType: 'json',
+		data: payload,
+		success:function(res){
+			if(res['msg'] == 'success'){
+				$('.cart').empty().append(res['data'].length);
+			}
+		},
+		error: function(res){
+			console.log(res);
+		}
+	});
+}
 $(document).ready(function(){
 	$(".s-l").click(function(){
 		$('.res').empty().removeClass('callout alert success');
@@ -47,6 +67,11 @@ $(document).ready(function(){
 				$('.p-help').empty().append('required').addClass('er');
 			}
 		}
+	});
+	$(".pick").click(function(){
+		var pid = $('.pid').html();
+		var qty = $('[name ="quantity"]').val();
+		add(pid,qty);
 	});
 
 });
