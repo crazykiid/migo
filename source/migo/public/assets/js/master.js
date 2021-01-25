@@ -73,5 +73,10 @@ $(document).ready(function(){
 		var qty = $('[name ="quantity"]').val();
 		add(pid,qty);
 	});
-
+	$(".create").click(function(){
+		var name = $('input[name="_name"]').val();
+		var email = $('input[name="_email"]').val();
+		var contact = $('input[name="_contact"]').val();
+		var pass = $('input[name="_pass"]').val();
+	});
 });

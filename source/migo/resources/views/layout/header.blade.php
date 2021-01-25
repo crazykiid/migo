@@ -12,7 +12,8 @@
 <div class="top-bar" id="mainNavigation">
     <div class="top-bar-left">
         <ul class="menu vertical medium-horizontal">
-            <li class="hide-for-small-only"><a href="/" class="logo" style="padding:0px;margin: 14px 24px;">MiGO</a></li>
+            <li class="hide-for-small-only"><a href="/" class="logo" style="padding:0px;margin: 14px 24px;">MiGO</a>
+            </li>            
         </ul>
     </div>
     <div class="top-bar-right">

@@ -9,8 +9,23 @@ class AccountController extends Controller
 {
     public function userCreate(Request $req){
 
-        return "creating";
+        if($req->has('_namet', '_email', '_contact', '_pass'))
+        {
+            //return $req;
+            Session::flash('res_title', 'Success!');
+            Session::flash('res_msg', 'Account created.');
+            Session::flash('res_type', 'success');
+            return back();
+        }
+        else
+        {
+            Session::flash('res_title', 'Invalid!');
+            Session::flash('res_msg', 'Required parameter missing or invalid.');
+            Session::flash('res_type', 'alert');
+            return back();
+        }
     }
+
     public function userLogout(){
         Session::flush();
         //return redirect('/login');
