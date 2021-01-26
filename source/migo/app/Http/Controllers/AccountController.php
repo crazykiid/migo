@@ -81,7 +81,18 @@ class AccountController extends Controller
                             ->first();
                         if($result && Hash::check($u_pass, $result->_password))
                         {
+                            $cart = DB::table('user_carts')
+                                    ->where('_id', $result->_id)
+                                    ->select('_cart')
+                                    ->first();
+                            if($cart){
+                                $req->session()->put('user_cart', $cart->_cart);
+                            }
+                            else{
+                                $req->session()->put('user_cart', '');
+                            }
                             $req->session()->put('user_id', $result->_id);
+                            $req->session()->put('user_email', $result->_email);
                             $req->session()->put('username', $result->_name);
 
                             $res_title = 'Success!';

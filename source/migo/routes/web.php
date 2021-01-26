@@ -15,6 +15,8 @@ Route::view('/cart', 'cart');
 
 Route::group(['middleware' => 'redirect'], function(){
 
+	Route::view('/setting', 'setting');
+
 	Route::view('/create', 'create');
 	Route::post('/create', 'App\Http\Controllers\AccountController@userCreate');
 

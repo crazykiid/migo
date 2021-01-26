@@ -10,7 +10,7 @@ function login(u,p){
 		data: payload,
 		success:function(res){
 			if(res['type'] == 'success'){
-				$('.res').append(res['title']+', redirecting...').addClass('callout success');
+				$('.res').append(res['title']+' redirecting...').addClass('callout success');
 				window.location.replace('/');
 			}
 			else{
@@ -25,7 +25,6 @@ function login(u,p){
 function add(pid,q){
 	var payload = {'_pid':pid, '_q':q};
 	var headers = {'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content')};
-	//$('.res').empty().removeClass('callout alert success');
 	$.ajax({
 		headers: headers,
         type: 'POST',
@@ -52,10 +51,8 @@ $(document).ready(function(){
 	});
 	$(".login").click(function(){
 		$('.u-help, .p-help').empty();
-		var user = $("#-user").val();
-		var pass = $("#-pass").val();
-		//var user = $("#-user").val().trim();
-		//var pass = $("#-pass").val().trim();
+		var user = $("#-user").val().trim();
+		var pass = $("#-pass").val().trim();
 		if(user.length > 0 && pass.length > 0){
 			login(user, pass);
 		}

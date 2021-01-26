@@ -19,24 +19,30 @@
     <div class="top-bar-right">
         <ul class="menu vertical medium-horizontal m-lg" style="padding: 0px 20px;">
             <li>
-                <a href="/about"><i class="fi-comment-quotes large"></i> This Project</a>
+                <a href="/about"><i class="fi-comment-quotes"></i> This Project</a>
             </li>
             <li>
-                <a href="https://github.com/crazykiid/migo" target="_blank" style="color:#fff;padding: 14px;"><i class="fi-social-github large"></i> Source</a>
+                <a href="https://github.com/crazykiid/migo" target="_blank" style="color:#fff;padding: 14px;"><i class="fi-social-github"></i> Source</a>
             </li>
             <li>
-                <a href="/cart"><i class="fi-shopping-cart large"></i> Cart (<span class="cart">0</span>)</a>
+                <a href="/cart"><i class="fi-shopping-cart"></i> Cart
+                (<span class="cart">@if(Session::has('user_cart') && empty(!Session::get('user_cart'))){{ count(json_decode(Session::get('user_cart'))) }}@else{{0}}@endif</span>)
+                </a>
             </li>
             <li>
-                @if(Session::has('username'))
-                <div data-toggle="user" style="padding:11px;cursor:pointer;"><i class="fi-torso large"></i> {{ Session::get('username') }}
+                @if(Session::has('username', 'user_email'))
+                <div data-toggle="user" style="padding:11px;cursor:pointer;"><i class="fi-torso"></i> {{ Session::get('username') }}
                 </div>
                 <div class="dropdown-pane" id="user" data-dropdown data-hover="true" data-hover-pane="true" data-position="bottom" data-alignment="right" style="color: #44318d;">
-                    <span>User: {{ Session::get('user_id') }}</span>
+                    <div style="padding:7px 0px;">
+                        <span class="uimg">{{ strtoupper(substr(Session::get('username'), 0,1)) }}</span>
+                        ({{ Session::get('user_email') }})
+                        <a href="/setting" style="color:#7d7c7f;padding:8px;display: inline;float:right;"><i class="fi-widget"></i></a>
+                    </div>
                     <button class="expanded button logout">Logout</button>
                 </div>  
                 @else
-                <div data-toggle="user" style="padding:11px;cursor:pointer;"><i class="fi-torso large"></i> Guest
+                <div data-toggle="user" style="padding:11px;cursor:pointer;"><i class="fi-torso"></i> Guest
                 </div>
                 <div class="dropdown-pane" id="user" data-dropdown data-hover="true" data-hover-pane="true" data-position="bottom" data-alignment="right" style="color: #44318d;">
                     <button class="expanded button s-l" data-open="login">Login</button>

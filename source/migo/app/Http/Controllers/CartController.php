@@ -20,77 +20,89 @@ class CartController extends Controller
 
     		$result = DB::table('products')->where('_id', $p_id)->first();
     		if($result){
-    			$max = 1000;
+    			$max = 10;
     			if($p_qty && $p_qty <= $max){
 
     				$cart = [];
-    				$user = 1;
-    				$old = DB::table('user_accounts')
-    					->join('user_carts','user_accounts._id', '=', 'user_carts._id')
-    					->where('user_accounts._id', $user)
-    					->select('user_accounts._status', 'user_carts._cart', 'user_carts._cart_id')
-    					->first();
-    				if($old)
-    				{	// have cart
-    					if($old->_cart)
-    					{	// have items
-    						$o_cart = json_decode($old->_cart, true);
-    						$n_cart = [];
-    						$n_exist = false;
-    						foreach($o_cart as $item){
 
-    							if($item['product_id'] == $p_id)
-    							{
-    								if(($item['quantity'] + $p_qty) <= $max)
-    								{
-    									$n_exist = true;
-    									$item['quantity'] = $item['quantity'] + $p_qty;
+                    if($req->session()->get('user_id'))
+                    {
+                        // with account
+        				$user = $req->session()->get('user_id');
+        				$old = DB::table('user_accounts')
+        					->join('user_carts','user_accounts._id', '=', 'user_carts._id')
+        					->where('user_accounts._id', $user)
+        					->select('user_accounts._status', 'user_carts._cart', 'user_carts._cart_id')
+        					->first();
+        				if($old)
+        				{	// have cart
+        					if($old->_cart)
+        					{	// have items
+        						$o_cart = json_decode($old->_cart, true);
+        						$n_cart = [];
+        						$n_exist = false;
+        						foreach($o_cart as $item){
+
+        							if($item['product_id'] == $p_id)
+        							{
+        								if(($item['quantity'] + $p_qty) <= $max)
+        								{
+        									$n_exist = true;
+        									$item['quantity'] = $item['quantity'] + $p_qty;
+        									$n_cart[] = $item;
+        								}
+        								else
+        								{
+    										return response()->json(['msg' => 'max quantity reached', 'data' => $o_cart, 'status' => 200]);
+        								}
+        							}
+        							else
+        							{
     									$n_cart[] = $item;
-    								}
-    								else
-    								{
-										return response()->json(['msg' => 'max quantity reached', 'data' => $o_cart, 'status' => 200]);
-    								}
-    							}
-    							else
-    							{
-									$n_cart[] = $item;
-    							}
-    						}
-    						if($n_exist == false){
-								$item = ['product_id' => $p_id, 'quantity' => $p_qty];
-								$n_cart[] = $item;
-    						}
-    						$n_cart = json_encode($n_cart);
-    						// save cart
-    						$result = DB::table('user_carts')
-    							->where('_cart_id', $old->_cart_id)
-    							->update(['_cart' => $n_cart]);
-    						return response()->json(['msg' => 'success', 'data' => json_decode($n_cart), 'status' => 200]);
-    					}
-    					else
-    					{	// empty cart
-    						$item = ['product_id' => $p_id, 'quantity' => $p_qty];
-    						$cart[] = $item;
-    						$cart = json_encode($cart);
-    						// save cart
-    						$result = DB::table('user_carts')
-    							->where('_cart_id', $old->_cart_id)
-    							->update(['_cart' => $cart]);
-							return response()->json(['msg' => 'success', 'data' => json_decode($cart), 'status' => 200]);
-    					}
-    				}
-    				else
-    				{	// no cart
-    					$item = ['product_id' => $p_id, 'quantity' => $p_qty];
-    					$cart[] = $item;
-    					$cart = json_encode($cart);
-    					// save cart
-    					$result = DB::table('user_carts')
-    						->insert(['_id' => $user, '_cart' => $cart]);
-						return response()->json(['msg' => 'success', 'data' => json_decode($cart), 'status' => 200]);
-    				}
-    				//return response()->json(['msg' => 'success', 'data' => $cart, 'status' => 200]);
+        							}
+        						}
+        						if($n_exist == false){
+    								$item = ['product_id' => $p_id, 'quantity' => $p_qty];
+    								$n_cart[] = $item;
+        						}
+        						$u_cart = json_encode($n_cart);
+        						// save cart
+        						$result = DB::table('user_carts')
+        							->where('_cart_id', $old->_cart_id)
+        							->update(['_cart' => $u_cart]);
+                                $req->session()->put('user_cart', $u_cart);
+        						return response()->json(['msg' => 'success', 'data' => $n_cart, 'status' => 200]);
+        					}
+        					else
+        					{	// empty cart
+        						$item = ['product_id' => $p_id, 'quantity' => $p_qty];
+        						$cart[] = $item;
+        						$u_cart = json_encode($cart);
+        						// save cart
+        						$result = DB::table('user_carts')
+        							->where('_cart_id', $old->_cart_id)
+        							->update(['_cart' => $u_cart]);
+                                $req->session()->put('user_cart', $u_cart);
+    							return response()->json(['msg' => 'success', 'data' => $cart, 'status' => 200]);
+        					}
+        				}
+        				else
+        				{	// no cart
+        					$item = ['product_id' => $p_id, 'quantity' => $p_qty];
+        					$cart[] = $item;
+        					$u_cart = json_encode($cart);
+        					// save cart
+        					$result = DB::table('user_carts')
+        						->insert(['_id' => $user, '_cart' => $u_cart]);
+                            $req->session()->put('user_cart', $u_cart);
+    						return response()->json(['msg' => 'success', 'data' => $cart, 'status' => 200]);
+        				}
+                    }
+                    else
+                    {
+                        // without account
+                        return "login first";
+                    }
     			}
     			else{
     				return "invalid quantity.";
