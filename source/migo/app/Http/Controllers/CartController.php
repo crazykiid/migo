@@ -27,7 +27,6 @@ class CartController extends Controller
     				$user = 1;
     				$old = DB::table('user_accounts')
     					->join('user_carts','user_accounts._id', '=', 'user_carts._id')
-    					//->where('user_accounts._status','1')
     					->where('user_accounts._id', $user)
     					->select('user_accounts._status', 'user_carts._cart', 'user_carts._cart_id')
     					->first();

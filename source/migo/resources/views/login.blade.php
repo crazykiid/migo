@@ -1,4 +1,4 @@
-@extends('layout.master', ['page_title' => 'Create account'])
+@extends('layout.master', ['page_title' => 'Login'])
 
 
 @section('page')
@@ -8,7 +8,7 @@
 	<!-- sign up form -->
 	<section style="padding: 20px 0px 0px;">
 
-		<h1 style="margin: 10px 0px;color: #44318d;font-size: 2rem;">Create Account</h1>
+		<h1 style="margin: 10px 0px;color: #44318d;font-size: 2rem;">Login</h1>
 
 		@if(Session::has('res_type'))
 		<!-- response -->
@@ -23,31 +23,22 @@
 			<div class="card-section">
 				<form method="post" action="" data-abide>
 				    <div class="grid-x grid-margin-x">
-				        <div class="cell small-12">
-				            <label>Name <span class="c-name"></span>
-				            <input type="text" name="_name" required>
-				            </label>
-				        </div>
+
 						<div class="cell small-12">
 				            <label>Email <span class="c-email"></span>
-				            <input type="email" name="_email" required>
-				            </label>
-				        </div>
-				        <div class="cell small-12">
-				            <label>Contact <span class="c-contact"></span>
-				            <input type="text" name="_contact" maxlength="10" required>
+				            <input type="email" name="_u" required>
 				            </label>
 				        </div>
 				        <div class="cell small-12">
 				            <label>Password <span class="c-pass"></span>
-				            <input type="password" name="_pass" required>
+				            <input type="password" name="_p" required>
 				            </label>
 				        </div>
 				        <div class="cell small-12" style="padding-top:12px;">
 				        	@csrf
 
-				            <button class="button create" type="submit">Create</button>
-				            <div>Already have an account? <a href="/login">Login</a></div>
+				            <button class="button" type="submit">Login</button>
+				            <div>Don't have an account? <a href="/create">Create</a></div>
 				        </div>
 				    </div>
 			    </form>

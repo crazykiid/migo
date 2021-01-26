@@ -1,5 +1,5 @@
 function login(u,p){
-	var payload = {'_u':u, '_p':p};
+	var payload = {'_u':u, '_p':p, '_t':'ajax'};
 	var headers = {'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content')};
 	$('.res').empty().removeClass('callout alert success');
 	$.ajax({
@@ -9,16 +9,16 @@ function login(u,p){
 		dataType: 'json',
 		data: payload,
 		success:function(res){
-			if(res['msg'] == 'login success'){
-				$('.res').append(res['msg']+', redirecting...').addClass('callout success');
+			if(res['type'] == 'success'){
+				$('.res').append(res['title']+', redirecting...').addClass('callout success');
 				window.location.replace('/');
 			}
 			else{
-				$('.res').append(res['msg']).addClass('callout alert');
+				$('.res').append(res['message']).addClass('callout alert');
 			}
 		},
 		error: function(res){
-			$('.res').append(res['msg']).addClass('callout alert');
+			$('.res').append(res['message']).addClass('callout alert');
 		}
 	});
 }

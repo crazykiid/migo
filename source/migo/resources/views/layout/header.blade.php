@@ -28,11 +28,11 @@
                 <a href="/cart"><i class="fi-shopping-cart large"></i> Cart (<span class="cart">0</span>)</a>
             </li>
             <li>
-                @if(Session::has('user'))
-                <div data-toggle="user" style="padding:11px;cursor:pointer;"><i class="fi-torso large"></i> {{ Session::get('user') }}
+                @if(Session::has('username'))
+                <div data-toggle="user" style="padding:11px;cursor:pointer;"><i class="fi-torso large"></i> {{ Session::get('username') }}
                 </div>
                 <div class="dropdown-pane" id="user" data-dropdown data-hover="true" data-hover-pane="true" data-position="bottom" data-alignment="right" style="color: #44318d;">
-                    <span>admin@test.com</span>
+                    <span>User: {{ Session::get('user_id') }}</span>
                     <button class="expanded button logout">Logout</button>
                 </div>  
                 @else
