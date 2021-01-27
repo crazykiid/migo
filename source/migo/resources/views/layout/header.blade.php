@@ -26,7 +26,7 @@
             </li>
             <li>
                 <a href="/cart"><i class="fi-shopping-cart"></i> Cart
-                (<span class="cart">@if(Session::has('user_cart') && empty(!Session::get('user_cart'))){{ count(json_decode(Session::get('user_cart'))) }}@else{{0}}@endif</span>)
+                (<span class="cart">@if(Session::has('user_cart') && empty(!Session::get('user_cart'))){{ count(Session::get('user_cart')) }}@else{{0}}@endif</span>)
                 </a>
             </li>
             <li>

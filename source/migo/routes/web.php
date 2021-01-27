@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function(){return view('index');});
 
 Route::view('/about', 'about');
-Route::view('/cart', 'cart');
+Route::get('/cart', 'App\Http\Controllers\CartController@cart');
 
 Route::group(['middleware' => 'redirect'], function(){
 

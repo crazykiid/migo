@@ -81,16 +81,39 @@ class AccountController extends Controller
                             ->first();
                         if($result && Hash::check($u_pass, $result->_password))
                         {
+                            $session_cart = [];
+                            $db_cart = [];
+                            $have_cart = false;
+                            if($req->session()->has('user_cart'))
+                            {
+                                $session_cart = $req->session()->get('user_cart');//array
+                            }
+
                             $cart = DB::table('user_carts')
                                     ->where('_id', $result->_id)
-                                    ->select('_cart')
+                                    ->select('_cart','_cart_id')
                                     ->first();
                             if($cart){
-                                $req->session()->put('user_cart', $cart->_cart);
+                                $have_cart = true;
+                                $db_cart = json_decode($cart->_cart);//array
                             }
-                            else{
-                                $req->session()->put('user_cart', '');
+
+                            $updated_cart = array_unique(array_merge($db_cart, $session_cart), SORT_REGULAR);
+
+                            //return $updated_cart;
+                            $j_cart = json_encode($updated_cart);
+                            if($have_cart)
+                            {
+                                $save = DB::table('user_carts')
+                                    ->where('_cart_id', $cart->_cart_id)
+                                    ->update(['_cart' => $j_cart]);
                             }
+                            else
+                            {
+                                $save = DB::table('user_carts')
+                                    ->insert(['_id' => $result->_id, '_cart' => $j_cart]);
+                            }
+                            $req->session()->put('user_cart', $updated_cart);
                             $req->session()->put('user_id', $result->_id);
                             $req->session()->put('user_email', $result->_email);
                             $req->session()->put('username', $result->_name);
@@ -107,7 +130,7 @@ class AccountController extends Controller
                         }
                     }
                     catch(\Exception $e)
-                    {
+                    { dd($e);
                         $res_title = 'Error Occurred!';
                         $res_msg = 'Something went wrong, try again.';
                         $res_type = 'alert';

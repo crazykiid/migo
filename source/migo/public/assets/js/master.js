@@ -22,6 +22,9 @@ function login(u,p){
 		}
 	});
 }
+function resetAdd(){
+	$('.pick').addClass('hollow').removeClass('success alert').html('Add to Cart').blur();
+}
 function add(pid,q){
 	var payload = {'_pid':pid, '_q':q};
 	var headers = {'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content')};
@@ -32,12 +35,19 @@ function add(pid,q){
 		dataType: 'json',
 		data: payload,
 		success:function(res){
-			if(res['msg'] == 'success'){
-				$('.cart').empty().append(res['data'].length);
+			if(res['msg'] == 'Success.'){
+				$('.cart').empty().append(res['data']['_cart'].length);
+				$('.pick').removeClass('hollow').addClass('success').html('Added!');
+				window.setTimeout(resetAdd,2000);
+			}
+			else{
+				$('.pick').removeClass('hollow').addClass('alert').html(res['msg']);
+				window.setTimeout(resetAdd,3000);
 			}
 		},
 		error: function(res){
-			console.log(res);
+			$('.pick').removeClass('hollow').addClass('alert').html('Try again!');
+			window.setTimeout(resetAdd,3000);
 		}
 	});
 }
