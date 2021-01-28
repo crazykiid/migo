@@ -10,8 +10,8 @@ class CartController extends Controller
 	public function cart(Request $req)
     {
         $data = [];
-        $cartdata = [];
-        $grandTotal = 0;
+        $cart_data = [];
+        $grand_total = 0;
         $o_cart = [];
 
         if($req->session()->has('user_id'))
@@ -24,6 +24,7 @@ class CartController extends Controller
                 ->first();
             if($old){
                 $o_cart = json_decode($old['_cart'], true);
+                $req->session()->put('user_cart', $o_cart);
             }
         }
         else{
@@ -34,17 +35,33 @@ class CartController extends Controller
         }
 
         if($o_cart){
+
             foreach($o_cart as $item){
-                //return $item;
-                $product = (array) DB::table('products')->where('_id', $item['product_id'])->first();
-                //return $product;
-                $row = ['product' => $product['_id'], 'image' => json_decode($product['_images'], true), 'name' => $product['_name'], 'price'=> $product['_price'], 'quantity' => $item['quantity']];
-                $cartdata[] = $row;
-                $grandTotal = sprintf("%.2f", ($product['_price'] * $item['quantity']) + $grandTotal); 
+ 
+                $row = [];
+                
+                $product = DB::table('products')
+                    ->where('_id', $item['product_id'])
+                    ->first();
+                if($product){
+                    $images = json_decode($product->_images);
+                    $url = null;
+                    if($images)
+                    {
+                        foreach ($images as $image)
+                        {
+                            $url = url('assets/img/product/'.$image);
+                            break;
+                        }
+                    }
+                    $row = ['pid' => $product->_id, 'image' => $url, 'name' => $product->_name, 'price'=> $product->_price, 'quantity' => $item['quantity']];
+                }
+                $cart_data[] = $row;
+                $grand_total = sprintf("%.2f", ($product->_price * $item['quantity']) + $grand_total);
             }
         }
-        $data['cartdata'] = $cartdata;
-        $data['grandtotal'] = $grandTotal;
+        $data['cartdata'] = $cart_data;
+        $data['grandtotal'] = $grand_total;
         //return $data;
         return view('cart', ['data' => $data]);
     }

@@ -29,12 +29,18 @@
             <span class="pid" style="display:none">{{ $data['id'] }}</span>
             <p>₹ {{ $data['price'] }}</p>
             <p>{{ $data['description'] }}</p>   
+            @if($data['limit'] && $data['limit'] <= 10)
             <label>Quantity
             <select name="quantity">
-                @for($x = 1;$x <= $data['max'];$x++)
-                <option value="{{$x}}">{{$x}}</option>
-                @endfor
+            @for($x = 1;$x <= $data['limit'];$x++)
+            <option value="{{$x}}">{{$x}}</option>
+            @endfor
             </select>
+            @else
+            <label>Quantity
+            <input type="text" name="quantity" placeholder="0" required pattern="number">
+            </label>
+            @endif            
             </label>
             <button class="hollow button expanded pick">Add to Cart</button>
             <a href="#" class="button large expanded">Buy Now</a>

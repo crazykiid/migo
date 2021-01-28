@@ -81,38 +81,41 @@ class AccountController extends Controller
                             ->first();
                         if($result && Hash::check($u_pass, $result->_password))
                         {
-                            $session_cart = [];
                             $db_cart = [];
                             $have_cart = false;
-                            if($req->session()->has('user_cart'))
-                            {
-                                $session_cart = $req->session()->get('user_cart');//array
-                            }
-
+                            $session_cart = [];
+                            $updated_cart = [];
+                            // check database
                             $cart = DB::table('user_carts')
                                     ->where('_id', $result->_id)
                                     ->select('_cart','_cart_id')
                                     ->first();
                             if($cart){
                                 $have_cart = true;
-                                $db_cart = json_decode($cart->_cart);//array
+                                $db_cart = json_decode($cart->_cart, true);
+                            }
+
+                            // check session
+                            if($req->session()->has('user_cart')){
+                                $session_cart = $req->session()->get('user_cart');
                             }
 
                             $updated_cart = array_unique(array_merge($db_cart, $session_cart), SORT_REGULAR);
 
-                            //return $updated_cart;
                             $j_cart = json_encode($updated_cart);
                             if($have_cart)
                             {
                                 $save = DB::table('user_carts')
-                                    ->where('_cart_id', $cart->_cart_id)
-                                    ->update(['_cart' => $j_cart]);
+                                        ->where('_cart_id', $cart->_cart_id)
+                                        ->update(['_cart' => $j_cart]);
                             }
                             else
                             {
                                 $save = DB::table('user_carts')
-                                    ->insert(['_id' => $result->_id, '_cart' => $j_cart]);
+                                        ->insert(['_id' => $result->_id, '_cart' => $j_cart]);
                             }
+
+                            
                             $req->session()->put('user_cart', $updated_cart);
                             $req->session()->put('user_id', $result->_id);
                             $req->session()->put('user_email', $result->_email);

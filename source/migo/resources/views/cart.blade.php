@@ -25,7 +25,7 @@
 			  <tbody>
 			  	@foreach($data['cartdata'] as $item)
 			  	<tr>
-			      <td><img src="http://localhost:8000/assets/img/product/{{ $item['image']['a'] }}" style="height:100px;margin:0px auto;display:block;"></td>
+			      <td><img src="{{ $item['image'] }}" style="height:100px;margin:0px auto;display:block;"></td>
 			      <td>{{ $item['name'] }}</td>
 			      <td>{{ $item['price'] }}</td>
 			      <td>{{ $item['quantity'] }}</td>

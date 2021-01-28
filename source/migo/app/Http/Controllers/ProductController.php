@@ -15,22 +15,29 @@ class ProductController extends Controller
 		{
 			try
 			{
-				$result = DB::table('products')->where('_id', $id)->first();
-				if($result)
+				$product = DB::table('products')
+					->where('_id', $id)
+					->first();
+				if($product)
 				{
 					//$data['cart'] = CartController::getCartCount();
-					$data['id'] = $result->_id;
-					$data['name'] = $result->_name;
-					$data['description'] = $result->_description;
-					$data['price'] = $result->_price;
+					$data['id'] = $product->_id;
+					$data['name'] = $product->_name;
+					$data['description'] = $product->_description;
+					$data['price'] = $product->_price;
 					$data['images'] = [];
-					$images = json_decode($result->_images, true);
-					if($images && count($images) > 0){
-						foreach ($images as $img) {
-							$data['images'][] = 'http://localhost:8000/assets/img/product/'.$img;
+					$data['limit'] = $product->_limit;
+
+					$images = json_decode($product->_images);
+					$urls = [];
+					if($images){
+						foreach ($images as $image){
+							$url = url('assets/img/product/'.$image);
+							$urls[] = $url;
 						}
 					}
-					$data['max'] = 4;
+					$data['images'] = $urls;
+					//return $data;
 					return view('products.view', ['data' => $data]);
 				}
 				else

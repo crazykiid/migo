@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function(){return view('index');});
+Route::get('/', 'App\Http\Controllers\PageController@index');
 
 Route::view('/about', 'about');
 Route::get('/cart', 'App\Http\Controllers\CartController@cart');
